@@ -10,7 +10,6 @@ ReactDOM.render(
         <Provider store={store}>
             <App />
         </Provider>
-        <App />
     </Router>,
      document.getElementById('root'));
 // This code has a filename of src/index.js and is written in JavaS
