@@ -1,41 +1,21 @@
-const { exec } = require('child_process');
+const axios = require('axios');
 
-// Liste des packages à vérifier
-const packagesToCheck = [
-  'antdp',
-  '@ant-design/icons',
-  'react-redux',
-  '@reduxjs/toolkit',
-  'axios',
-  'chart.js',
-  'html-react-parser',
-  'millify',
-  'moment',
-  'react-chartjs-2'
-];
+const fetchData = async () => {
+  const options = {
+    method: 'GET',
+    url: 'https://crypto-news16.p.rapidapi.com/news/top/50',
+    headers: {
+      'X-RapidAPI-Key': '21a1ffb710msh17798960304fcc1p1f691ajsn7d3f7c362914',
+      'X-RapidAPI-Host': 'crypto-news16.p.rapidapi.com'
+    }
+  };
 
-// Fonction pour vérifier l'installation des packages
-function checkPackages(packages) {
-  packages.forEach(packageName => {
-    exec(`npm list ${packageName}`, (err, stdout, stderr) => {
-      if (err) {
-        console.error(`Erreur lors de la vérification du package ${packageName} :`, err);
-        return;
-      }
+  try {
+    const response = await axios.request(options);
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-      if (stderr) {
-        console.error(`Erreur lors de l'exécution de la commande pour ${packageName} :`, stderr);
-        return;
-      }
-
-      if (stdout.includes(packageName)) {
-        console.log(`${packageName} est installé.`);
-      } else {
-        console.log(`${packageName} n'est pas installé.`);
-      }
-    });
-  });
-}
-
-// Appel de la fonction pour vérifier les packages
-checkPackages(packagesToCheck);
+fetchData(); // Call the function to fetch the data
