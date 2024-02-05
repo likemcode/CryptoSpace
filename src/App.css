@@ -302,9 +302,10 @@ a:hover{
 width: 70%;
 }
 
-.news-image-container .img{
-    width:100px;
-    height:100px;
+.news-image-container img {
+    width:30%; /* Adjust the width as needed */
+    height: 100px; /* Maintains aspect ratio */
+    /* object-fit: cover; Covers the area of the container without stretching the image */
 }
 .news-card p{
     color: black;
