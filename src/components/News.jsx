@@ -10,10 +10,10 @@ const { Option } = Select;
 const News = ({ simplified }) => {
   const count = simplified ? 10 : 100;
   const { data } = useGetCryptosQuery(100);
-  const { data: cryptoNews } = useGetCryptoNewsQuery(count);
-  const my_cryptoNews=cryptoNews?.data
+  // const { data: cryptoNews } = useGetCryptoNewsQuery(count);
+  let my_cryptoNews;//=cryptoNews?.data
   console.log(my_cryptoNews )
-  if (!cryptoNews) return 'Loading...';
+  if (!my_cryptoNews) return 'Loading...';
 
   return (
     <Row gutter={[24, 24]}>
