@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import HTMLReactParser from 'html-react-parser';
 import { useParams } from 'react-router-dom';
 import millify from 'millify';
@@ -6,17 +6,42 @@ import { Col, Row,Typography, Select } from 'antd';
 import { MoneyCollectOutlined, DollarCircleOutlined, FundOutlined, ExclamationCircleOutlined, StopOutlined, TrophyOutlined, CheckOutlined, NumberOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import LineChart from './LineChart';
 import { useGetCryptoDetailsQuery, useGetCryptoHistoryQuery } from '../services/cryptoApi';
+import {useGetCoinsListQuery, useGetCoinDetailsQuery} from '../services/crypto'
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 const CryptoDetails = () => {
   const {coinId} =useParams()
   const [timeperiod, setTimeperiod]=useState('7d')
+  const [coinIId, setCoinIId] = useState('bitcoin');
   const {data, isFetching} =useGetCryptoDetailsQuery(coinId)
   const {data: coinHistory} =useGetCryptoHistoryQuery({coinId, timeperiod})
-  console.log(data)
+  const { data: coinsList } = useGetCoinsListQuery(); // Hook to fetch the list of coins
+  const { data: coinDetails } =useGetCoinDetailsQuery(coinIId); // Hook to fetch coin details by name
+  
   const cryptoDetails= data?.data?.coin;
-  if (isFetching) return 'loading...'
+  useEffect(() => {
+    if (cryptoDetails && coinsList) {
+      const coin = coinsList.find(c => c.name === cryptoDetails.name);
+      if (coin) {
+        console.log(coin)
+        setCoinIId(coin.id); // Set the coinid to fetch details by name
+      }
+    }
+  }, [cryptoDetails, coinsList]);
+  console.log(cryptoDetails)
+  if (isFetching || !cryptoDetails || !coinHistory) {
+    // Return a loading state that matches the layout of your component
+    return (
+      <div>
+        <p>Loading...</p>
+        {/* Add more placeholders to match the layout of your component */}
+      </div>
+    );}
+    console.log(cryptoDetails)
+
+  
+
   const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
 
   const stats = [
@@ -84,7 +109,9 @@ const CryptoDetails = () => {
       <Col className="coin-desc-link">
         <Row className="coin-desc">
           <Title level={3} className="coin-details-heading">What is {cryptoDetails.name}?</Title>
-          {HTMLReactParser(cryptoDetails.description)}
+          
+          {HTMLReactParser(coinDetails.description.en)}
+
         </Row>
         <Col className="coin-links">
           <Title level={3} className="coin-details-heading">{cryptoDetails.name} Links</Title>
@@ -101,4 +128,4 @@ const CryptoDetails = () => {
   
 };
 
-export default CryptoDetails
+export default CryptoDetails;
