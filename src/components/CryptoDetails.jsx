@@ -11,13 +11,12 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 const CryptoDetails = () => {
   const {coinId} =useParams()
-  const [timePeriod, setTimePeriod]=useState('7d')
+  const [timeperiod, setTimeperiod]=useState('7d')
   const {data, isFetching} =useGetCryptoDetailsQuery(coinId)
-  const {data: coinHistory} =useGetCryptoHistoryQuery({coinId, timePeriod})
+  const {data: coinHistory} =useGetCryptoHistoryQuery({coinId, timeperiod})
   console.log(data)
-  if (isFetching) return 'loading...'
   const cryptoDetails= data?.data?.coin;
-
+  if (isFetching) return 'loading...'
   const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
 
   const stats = [
@@ -45,7 +44,7 @@ const CryptoDetails = () => {
         <p>{cryptoDetails.name} live price in US Dollar (USD). View value Statistics, market Cap and supply. </p>
       </Col>
       <Select defaultValue='7d' className='select-timeperiod'
-      placeholder='select Time Period' onChange={(value)=>setTimePeriod(value)} 
+      placeholder='select Time Period' onChange={(value)=>setTimeperiod(value)} 
       >
         {time.map((date) => <Option key={date}>{date}</Option>)}
       </Select>
