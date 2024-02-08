@@ -12,7 +12,7 @@ export default configureStore({
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
         cryptoApi.middleware,
-        cryptoNewsApi.middleware, // Make sure to include middleware for both APIs
+        cryptoNewsApi.middleware, 
         cryptoDescriptionApi.middleware,
     )
         
