@@ -10,27 +10,31 @@ import {useGetCoinsListQuery, useGetCoinDetailsQuery} from '../services/crypto'
 
 const { Title, Text } = Typography;
 const { Option } = Select;
+
 const CryptoDetails = () => {
   const {coinId} =useParams()
   const [timeperiod, setTimeperiod]=useState('7d')
-  const [coinIId, setCoinIId] = useState('bitcoin');
+  const [coinIId, setCoinIId] = useState(null);
   const {data, isFetching} =useGetCryptoDetailsQuery(coinId)
   const {data: coinHistory} =useGetCryptoHistoryQuery({coinId, timeperiod})
   const { data: coinsList } = useGetCoinsListQuery(); // Hook to fetch the list of coins
-  const { data: coinDetails } =useGetCoinDetailsQuery(coinIId); // Hook to fetch coin details by name
   
   const cryptoDetails= data?.data?.coin;
   useEffect(() => {
     if (cryptoDetails && coinsList) {
       const coin = coinsList.find(c => c.name === cryptoDetails.name);
       if (coin) {
-        console.log(coin)
+        console.log('fil',coin)
         setCoinIId(coin.id); // Set the coinid to fetch details by name
       }
     }
   }, [cryptoDetails, coinsList]);
-  console.log(cryptoDetails)
-  if (isFetching || !cryptoDetails || !coinHistory) {
+  
+  // Use the coinDetailsQuery only when coinIId is not null
+  const coinDetailsQuery = useGetCoinDetailsQuery(coinIId);
+  const { data: coinDetails } = coinDetailsQuery;// Hook to fetch coin details by name
+
+  if (isFetching || !cryptoDetails || !coinHistory || !coinIId || !coinDetails) {
     // Return a loading state that matches the layout of your component
     return (
       <div>
@@ -38,9 +42,7 @@ const CryptoDetails = () => {
         {/* Add more placeholders to match the layout of your component */}
       </div>
     );}
-    console.log(cryptoDetails)
-
-  
+    console.log('coinDetails: ',coinDetails)
 
   const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
 
@@ -109,9 +111,7 @@ const CryptoDetails = () => {
       <Col className="coin-desc-link">
         <Row className="coin-desc">
           <Title level={3} className="coin-details-heading">What is {cryptoDetails.name}?</Title>
-          
           {HTMLReactParser(coinDetails.description.en)}
-
         </Row>
         <Col className="coin-links">
           <Title level={3} className="coin-details-heading">{cryptoDetails.name} Links</Title>
