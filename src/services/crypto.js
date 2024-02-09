@@ -11,8 +11,11 @@ export const cryptoDescriptionApi = createApi({
     getCoinDetails: builder.query({
       query: (coinId) => `coins/${coinId}`,
     }),
+    getExchanges: builder.query({
+      query: () => `exchanges`,
+    }),
   }),
 });
 
 // Export the hooks
-export const { useGetCoinsListQuery, useGetCoinDetailsQuery } = cryptoDescriptionApi;
+export const { useGetCoinsListQuery, useGetCoinDetailsQuery, useGetExchangesQuery } = cryptoDescriptionApi;

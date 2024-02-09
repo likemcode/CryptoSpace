@@ -7,6 +7,7 @@ import { MoneyCollectOutlined, DollarCircleOutlined, FundOutlined, ExclamationCi
 import LineChart from './LineChart';
 import { useGetCryptoDetailsQuery, useGetCryptoHistoryQuery } from '../services/cryptoApi';
 import {useGetCoinsListQuery, useGetCoinDetailsQuery} from '../services/crypto'
+import Loader from './Loader';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -36,12 +37,7 @@ const CryptoDetails = () => {
 
   if (isFetching || !cryptoDetails || !coinHistory || !coinIId || !coinDetails) {
     // Return a loading state that matches the layout of your component
-    return (
-      <div>
-        <p>Loading...</p>
-        {/* Add more placeholders to match the layout of your component */}
-      </div>
-    );}
+     return <Loader />}
     console.log('coinDetails: ',coinDetails)
 
   const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
