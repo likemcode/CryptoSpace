@@ -21,6 +21,7 @@ const CryptoDetails = () => {
   const { data: coinsList } = useGetCoinsListQuery(); // Hook to fetch the list of coins
   
   const cryptoDetails= data?.data?.coin;
+  
   useEffect(() => {
     if (cryptoDetails && coinsList) {
       const coin = coinsList.find(c => c.name === cryptoDetails.name);
@@ -30,15 +31,15 @@ const CryptoDetails = () => {
       }
     }
   }, [cryptoDetails, coinsList]);
-  
+
   // Use the coinDetailsQuery only when coinIId is not null
   const coinDetailsQuery = useGetCoinDetailsQuery(coinIId);
   const { data: coinDetails } = coinDetailsQuery;// Hook to fetch coin details by name
 
   if (isFetching || !cryptoDetails || !coinHistory || !coinIId || !coinDetails) {
-    // Return a loading state that matches the layout of your component
+    
      return <Loader />}
-    console.log('coinDetails: ',coinDetails)
+    
 
   const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
 
