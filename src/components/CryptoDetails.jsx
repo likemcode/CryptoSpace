@@ -26,7 +26,6 @@ const CryptoDetails = () => {
     if (cryptoDetails && coinsList) {
       const coin = coinsList.find(c => c.name === cryptoDetails.name);
       if (coin) {
-        console.log('fil',coin)
         setCoinIId(coin.id); // Set the coinid to fetch details by name
       }
     }

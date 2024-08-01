@@ -11,8 +11,8 @@ const { Option } = Select;
 const News = ({ simplified }) => {
   const count = simplified ? 10 : 100;
   const { data } = useGetCryptosQuery(100);
-  // const { data: cryptoNews } = useGetCryptoNewsQuery(count);
-   let my_cryptoNews;//cryptoNews?.data
+  const { data: cryptoNews } = useGetCryptoNewsQuery(count);
+   let my_cryptoNews = cryptoNews?.data
   
   if (!my_cryptoNews) {return <Loader/>}
 
